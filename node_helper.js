@@ -125,8 +125,8 @@ module.exports = NodeHelper.create({
           log(err)
         } else {
           log("Audio ends")
-          this.sendSocketNotification("ASSISTANT_AUDIO_RESULT_ENDED")
         }
+        this.sendSocketNotification("ASSISTANT_AUDIO_RESULT_ENDED")
       })
     }
   },
