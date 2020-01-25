@@ -30,11 +30,6 @@ class AssistantResponse extends AssistantResponseClass{
     
     dom.appendChild(contener)
 
-    var chime = document.createElement("audio")
-    chime.id = "AMK2_CHIME"
-    chime.autoplay = true;
-    dom.appendChild(chime)
-    
     super.getDom()
     return dom
   } 

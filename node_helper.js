@@ -50,6 +50,12 @@ module.exports = NodeHelper.create({
           })
         })
         break
+      case "PLAY_SOUND":
+        var filepath = path.resolve(__dirname, payload)
+        this.player.play(filepath, (err) => {
+          if (err) log(err)
+        })
+        break
     }
     if ((Object.entries(this.config.pluginsConfig).length > 0))
       this.HelperPlugins.doHelperPlugins(noti,payload,(send,params)=>{ this.HelperCallback(send,params) })
@@ -101,18 +107,18 @@ module.exports = NodeHelper.create({
         parser.parse(response, (result)=>{
           delete result.screen.originalContent
           log(result)
-          this.playAudio(result);
+          this.playAudioRespone(result);
           this.sendSocketNotification("ASSISTANT_RESULT", result)
         })
       } else {
         log (response)
-        this.playAudio(response);
+        this.playAudioRespone(response);
         this.sendSocketNotification("ASSISTANT_RESULT", response)
       }
     })
   },
 
-  playAudio: function(response) {
+  playAudioRespone: function(response) {
     if (response.audio && this.config.responseConfig.useAudioOutput) {
       this.player.play(response.audio.path, (err) => {
         if (err) {

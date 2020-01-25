@@ -148,9 +148,16 @@ Module.register("MMM-AssistantMk2", {
       },
       doPlugin: (pluginName, args) => {
         return this.doPlugin(pluginName, args)
+      },
+      playSound: (sound) => {
+        return this.playSound(sound)
       }
     }
     this.assistantResponse = new AssistantResponse(this.helperConfig["responseConfig"], callbacks)
+  },
+
+  playSound: function(sound) {
+    this.sendSocketNotification("PLAY_SOUND", sound)
   },
 
   doPlugin: function(pluginName, args) {
@@ -292,10 +299,9 @@ Module.register("MMM-AssistantMk2", {
         this.assistantResponse.fullscreen(true)
         this.assistantActivate({ type: "TEXT", key: magicQuery}, Date.now())
         break
-      case "ASSISTANT_DEMO": {
+      case "ASSISTANT_DEMO":
         if (this.config.developer) this.demo()
         break
-      }
     }
     this.doPlugin("onAfterNotificationReceived", {notification:noti, payload:payload})
   },
