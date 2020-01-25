@@ -173,7 +173,7 @@ class AssistantResponseClass {
         this.status("reply")
         log("Wait audio to finish")
       } else {
-        log("No response") // Error ?
+        log("No response")
         this.end()
       }
     }
@@ -193,8 +193,6 @@ class AssistantResponseClass {
     winh.classList.add("hidden")
     var iframe = document.getElementById("AMK2_SCREENOUTPUT")
     iframe.src = "about:blank"
-    var audioSrc = document.getElementById("AMK2_AUDIO_RESPONSE")
-    audioSrc.src = ""
     var tr = document.getElementById("AMK2_TRANSCRIPTION")
     tr.innerHTML = ""
     var ts = document.getElementById("AMK2_TRYSAY")
@@ -215,8 +213,6 @@ class AssistantResponseClass {
     if (response.audio && this.config.useAudioOutput) {
       this.callbacks.doPlugin("onBeforeAudioResponse")
       this.showing = true
-      var audioSrc = document.getElementById("AMK2_AUDIO_RESPONSE")
-      audioSrc.src = this.makeUrl(response.audio.uri)
       return true
     }
     return false

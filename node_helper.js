@@ -4,7 +4,7 @@
 
 const path = require("path")
 const exec = require("child_process").exec
-const fs = require("fs")
+const playSound = require('play-sound')
 const Assistant = require("./components/assistant.js")
 const ScreenParser = require("./components/screenParser.js")
 const ActionManager = require("./components/actionManager.js")
@@ -77,6 +77,7 @@ module.exports = NodeHelper.create({
     assistantConfig.session = payload.session
     assistantConfig.lang = (payload.lang) ? payload.lang : ((payload.profile.lang) ? payload.profile.lang : null)
     assistantConfig.useScreenOutput = payload.useScreenOutput
+    assistantConfig.useAudioOutput = payload.useAudioOutput
     assistantConfig.micConfig = this.config.micConfig
     this.assistant = new Assistant(assistantConfig, (obj)=>{this.tunnel(obj)})
 
@@ -100,13 +101,28 @@ module.exports = NodeHelper.create({
         parser.parse(response, (result)=>{
           delete result.screen.originalContent
           log(result)
+          this.playAudio(result);
           this.sendSocketNotification("ASSISTANT_RESULT", result)
         })
       } else {
         log (response)
+        this.playAudio(response);
         this.sendSocketNotification("ASSISTANT_RESULT", response)
       }
     })
+  },
+
+  playAudio: function(response) {
+    if (response.audio && this.config.responseConfig.useAudioOutput) {
+      this.player.play(response.audio.path, (err) => {
+        if (err) {
+          log(err)
+        } else {
+          log("Audio ends")
+          this.sendSocketNotification("ASSISTANT_AUDIO_RESULT_ENDED")
+        }
+      })
+    }
   },
 
   initialize: function (config) {
@@ -123,6 +139,7 @@ module.exports = NodeHelper.create({
     this.cleanUptmp()
     log("Response delay is set to " + this.config.responseConfig.delay + ((this.config.responseConfig.delay > 1) ? " seconds" : " second"))
     this.HelperPlugins = new HelperPlugins(this.config)
+    this.player = playSound(config.playConfig)
     log("AssistantMk2 v3 is initialized.")
   },
 

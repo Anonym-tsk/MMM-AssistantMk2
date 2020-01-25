@@ -50,17 +50,6 @@ class AssistantResponse extends AssistantResponseClass{
     scout.id = "AMK2_SCREENOUTPUT"
     scoutpan.appendChild(scout)
     dom.appendChild(scoutpan)
-    var auoutpan = document.createElement("div")
-    var auout = document.createElement("audio")
-    auout.id = "AMK2_AUDIO_RESPONSE"
-    auout.autoplay = true;
-    auout.addEventListener("ended", ()=>{
-      this.callbacks.doPlugin("onAfterAudioResponse")
-      console.log("audio end")
-      this.end()
-    })
-    auoutpan.appendChild(auout)
-    dom.appendChild(auoutpan)
     document.body.appendChild(dom)
     super.prepare()
   }

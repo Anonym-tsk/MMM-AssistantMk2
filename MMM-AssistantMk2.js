@@ -37,6 +37,9 @@ Module.register("MMM-AssistantMk2", {
       recorder: "arecord",
       device: null,
     },
+    playConfig: {
+      player: null
+    },
     customActionConfig: {
       autoMakeAction: false,
       autoUpdateAction: false,
@@ -324,6 +327,10 @@ Module.register("MMM-AssistantMk2", {
           delete this.session[payload.session]
         }
         this.assistantResponse.start(payload)
+        break
+      case "ASSISTANT_AUDIO_RESULT_ENDED":
+        this.doPlugin("onAfterAudioResponse")
+        this.assistantResponse.end()
         break
       case "TUNNEL":
         this.assistantResponse.tunnel(payload)
