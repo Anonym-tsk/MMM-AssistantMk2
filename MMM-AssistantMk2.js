@@ -110,7 +110,7 @@ Module.register("MMM-AssistantMk2", {
   start: function () {
     const helperConfig = [
       "debug", "recipes", "customActionConfig", "assistantConfig", "micConfig",
-      "responseConfig", "pluginsConfig"
+      "playConfig", "responseConfig", "pluginsConfig"
     ]
     this.helperConfig = {}
     if (this.config.debug) log = _log
